@@ -1,0 +1,37 @@
+type PrakrutiType = 
+ variant {
+   Kapha;
+   Pitta;
+   Vata;
+ };
+type FacialConditions = 
+ record {
+   darkCircles: text;
+   faceShape: text;
+   puffiness: text;
+   skinTone: text;
+ };
+type DoshaScores = 
+ record {
+   kapha: float64;
+   pitta: float64;
+   vata: float64;
+ };
+type AnalysisResult = 
+ record {
+   confidence: float64;
+   doshaScores: DoshaScores;
+   facialConditions: FacialConditions;
+   id: nat;
+   prakruti: PrakrutiType;
+   questAnswers: vec text;
+   timestamp: int;
+ };
+service : {
+  getAnalysisById: (id: nat) -> (opt AnalysisResult) query;
+  getAnalysisCount: () -> (nat) query;
+  getLatestAnalysis: () -> (opt AnalysisResult) query;
+  storeAnalysis: (prakruti: PrakrutiType, doshaScores: DoshaScores,
+   confidence: float64, facialConditions: FacialConditions, questAnswers:
+   vec text) -> (nat);
+}

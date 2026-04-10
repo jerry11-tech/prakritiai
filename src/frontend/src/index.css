@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-display: "Space Grotesk";
+    --font-body: "DM Sans";
+    --font-mono: monospace;
+    --radius: 0.625rem;
+
+    --background: 0.08 0.015 280;
+    --foreground: 0.95 0.01 280;
+    --card: 0.12 0.018 280;
+    --card-foreground: 0.95 0.01 280;
+    --popover: 0.15 0.02 280;
+    --popover-foreground: 0.95 0.01 280;
+
+    --primary: 0.68 0.22 280;
+    --primary-foreground: 0.08 0.015 280;
+
+    --secondary: 0.18 0.025 280;
+    --secondary-foreground: 0.9 0.01 280;
+    --muted: 0.18 0.025 280;
+    --muted-foreground: 0.58 0.015 280;
+
+    --accent: 0.7 0.2 170;
+    --accent-foreground: 0.08 0.015 170;
+
+    --destructive: 0.55 0.22 25;
+    --destructive-foreground: 0.95 0.01 25;
+
+    --border: 0.22 0.025 280;
+    --input: 0.22 0.025 280;
+    --ring: 0.68 0.22 280;
+
+    --chart-1: 0.68 0.22 280;
+    --chart-2: 0.7 0.2 170;
+    --chart-3: 0.72 0.18 45;
+    --chart-4: 0.58 0.15 25;
+    --chart-5: 0.65 0.18 145;
+
+    --sidebar: 0.12 0.018 280;
+    --sidebar-foreground: 0.95 0.01 280;
+    --sidebar-primary: 0.68 0.22 280;
+    --sidebar-primary-foreground: 0.08 0.015 280;
+    --sidebar-accent: 0.18 0.025 280;
+    --sidebar-accent-foreground: 0.9 0.01 280;
+    --sidebar-border: 0.22 0.025 280;
+    --sidebar-ring: 0.68 0.22 280;
+  }
+
+  .dark {
+    --background: 0.08 0.015 280;
+    --foreground: 0.95 0.01 280;
+    --card: 0.12 0.018 280;
+    --card-foreground: 0.95 0.01 280;
+    --popover: 0.15 0.02 280;
+    --popover-foreground: 0.95 0.01 280;
+
+    --primary: 0.68 0.22 280;
+    --primary-foreground: 0.08 0.015 280;
+
+    --secondary: 0.18 0.025 280;
+    --secondary-foreground: 0.9 0.01 280;
+    --muted: 0.18 0.025 280;
+    --muted-foreground: 0.58 0.015 280;
+
+    --accent: 0.7 0.2 170;
+    --accent-foreground: 0.08 0.015 170;
+
+    --destructive: 0.55 0.22 25;
+    --destructive-foreground: 0.95 0.01 25;
+
+    --border: 0.22 0.025 280;
+    --input: 0.22 0.025 280;
+    --ring: 0.68 0.22 280;
+
+    --chart-1: 0.68 0.22 280;
+    --chart-2: 0.7 0.2 170;
+    --chart-3: 0.72 0.18 45;
+    --chart-4: 0.58 0.15 25;
+    --chart-5: 0.65 0.18 145;
+
+    --sidebar: 0.12 0.018 280;
+    --sidebar-foreground: 0.95 0.01 280;
+    --sidebar-primary: 0.68 0.22 280;
+    --sidebar-primary-foreground: 0.08 0.015 280;
+    --sidebar-accent: 0.18 0.025 280;
+    --sidebar-accent-foreground: 0.9 0.01 280;
+    --sidebar-border: 0.22 0.025 280;
+    --sidebar-ring: 0.68 0.22 280;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/fonts/SpaceGrotesk.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("/assets/fonts/DMSans.woff2") format("woff2");
+  font-display: swap;
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .gradient-hero {
+    background: linear-gradient(
+      135deg,
+      oklch(var(--primary)) 0%,
+      oklch(var(--accent)) 50%,
+      oklch(0.72 0.18 45) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% auto;
+    animation: shimmer 4s linear infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: 200% center;
+    }
+    100% {
+      background-position: -200% center;
+    }
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-float {
+    animation: float 5s ease-in-out infinite;
+  }
+
+  .animate-fadeUp {
+    animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-scaleIn {
+    animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

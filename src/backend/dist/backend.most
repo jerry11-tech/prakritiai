@@ -1,0 +1,26 @@
+// Version: 1.0.0
+type AnalysisResult__713425855 =
+  {
+    confidence : Float;
+    doshaScores : DoshaScores__183232715;
+    facialConditions : FacialConditions__853323050;
+    id : Nat;
+    prakruti : PrakrutiType__827177740;
+    questAnswers : [Text];
+    timestamp : Int
+  };
+type DoshaScores__183232715 = {kapha : Float; pitta : Float; vata : Float};
+type FacialConditions__853323050 =
+  {darkCircles : Text; faceShape : Text; puffiness : Text; skinTone : Text};
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type PrakrutiType__827177740 = {#Kapha; #Pitta; #Vata};
+actor {
+  stable analysisNextId : {var value : Nat};
+  stable analysisResults :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?AnalysisResult__713425855]];
+      var elementIndex : Nat__490723111
+    }
+};

@@ -1,0 +1,24 @@
+{
+  "overview": "PrakritiAI is an AI-powered Ayurvedic wellness platform that classifies your body type (Vata, Pitta, or Kapha) using a 12-question lifestyle questionnaire and simulated facial analysis, then delivers personalized diet, lifestyle, and herbal recommendations based on ancient Ayurvedic principles.",
+  "features": [
+    "12-question interactive Prakruti questionnaire with rule-based AI classification",
+    "Dosha breakdown visualization with animated bars (Vata/Pitta/Kapha percentages)",
+    "Personalized Ayurvedic recommendations: diet, lifestyle, herbs, and remedies",
+    "Image upload with simulated facial condition analysis (face shape, dark circles, puffiness)",
+    "Backend persistence for storing analysis results with timestamps",
+    "Full landing page: hero, about, features, how-it-works, demo, tech stack, footer",
+    "Dark purple/teal animated UI with scroll-triggered animations"
+  ],
+  "category": "health-wellness",
+  "tags": [
+    "ayurveda",
+    "prakruti",
+    "dosha",
+    "wellness",
+    "ai",
+    "questionnaire",
+    "health",
+    "recommendation"
+  ],
+  "last_updated": "2026-04-10T15:43:55.606Z"
+}
