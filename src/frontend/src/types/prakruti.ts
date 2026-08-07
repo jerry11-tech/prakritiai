@@ -31,6 +31,10 @@ export interface FacialConditions {
   darkCircles: DarkCirclesSeverity;
   puffiness: PuffinessLevel;
   skinTone: string;
+  skinMoisture: string;
+  hairTexture: string;
+  bodyFrame: string;
+  eyeLook: string;
 }
 
 export interface PrakrutiResult {

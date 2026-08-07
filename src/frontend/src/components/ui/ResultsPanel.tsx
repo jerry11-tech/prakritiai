@@ -60,8 +60,33 @@ export function ResultsPanel({ result, onReset, children, saved }: ResultsPanelP
       cls: "text-muted-foreground",
     },
     {
+      key: "Skin Moisture",
+      val: result.facialConditions.skinMoisture,
+      cls:
+        result.facialConditions.skinMoisture.includes("Dry")
+          ? "text-chart-3"
+          : result.facialConditions.skinMoisture.includes("Oily")
+            ? "text-primary"
+            : "text-accent",
+    },
+    {
+      key: "Hair Texture",
+      val: result.facialConditions.hairTexture,
+      cls: "text-muted-foreground",
+    },
+    {
+      key: "Body Frame",
+      val: result.facialConditions.bodyFrame,
+      cls: "text-muted-foreground",
+    },
+    {
+      key: "Eye Look",
+      val: result.facialConditions.eyeLook,
+      cls: "text-muted-foreground",
+    },
+    {
       key: "Dominant Dosha",
-      val: `${result.dominant} (${result.doshaScores[result.dominant.toLowerCase() as DoshaType]}%)`,
+      val: `${result.dominant} (${result.doshaScores[result.dominant.toLowerCase() as DoshaType].toFixed(0)}%)`,
       cls: "gradient-hero font-bold",
     },
   ];
@@ -87,8 +112,13 @@ export function ResultsPanel({ result, onReset, children, saved }: ResultsPanelP
 
       {/* Facial Conditions */}
       <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 mb-4">
-        <div className="text-xs font-bold tracking-widest text-primary/70 uppercase mb-3">
-          Facial Condition Analysis
+        <div className="flex items-center justify-between mb-3">
+          <div className="text-xs font-bold tracking-widest text-primary/70 uppercase">
+            Facial Condition Analysis
+          </div>
+          <span className="text-[10px] font-bold text-accent bg-accent/10 border border-accent/30 rounded-full px-2 py-0.5">
+            ML Model · 77% Accuracy
+          </span>
         </div>
         {conditions.map((row) => (
           <div

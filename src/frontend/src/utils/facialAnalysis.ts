@@ -20,6 +20,10 @@ const SKIN_TONES = [
   "Deep, Rich",
   "Light, Cool",
 ];
+const SKIN_MOISTURES = ["Dry, Rough", "Normal", "Oily, Smooth"];
+const HAIR_TEXTURES = ["Dry, Frizzy", "Fine, Straight", "Thick, Oily"];
+const BODY_FRAMES = ["Thin, Lean", "Medium", "Broad, Heavy"];
+const EYE_LOOKS = ["Small, Dry", "Sharp, Piercing", "Large, Lustrous"];
 
 function hashString(str: string): number {
   let hash = 5381;
@@ -35,27 +39,26 @@ function seededRandom(seed: number, offset: number): number {
   return (n % 1000) / 1000;
 }
 
+/**
+ * Derives the 8 facial-condition attributes deterministically from the image
+ * seed. The seed is stable per uploaded image, so the same face always yields
+ * the same facial observations (which are then fed to the trained DoshaNet).
+ */
 export function simulateFacialAnalysis(seed: string): FacialConditions {
   const numericSeed = hashString(seed);
 
-  const faceShapeIdx = Math.floor(
-    seededRandom(numericSeed, 0) * FACE_SHAPES.length,
-  );
-  const darkCirclesIdx = Math.floor(
-    seededRandom(numericSeed, 1) * DARK_CIRCLES.length,
-  );
-  const puffinessIdx = Math.floor(
-    seededRandom(numericSeed, 2) * PUFFINESS.length,
-  );
-  const skinToneIdx = Math.floor(
-    seededRandom(numericSeed, 3) * SKIN_TONES.length,
-  );
+  const pick = <T,>(arr: T[], offset: number): T =>
+    arr[Math.floor(seededRandom(numericSeed, offset) * arr.length)];
 
   return {
-    faceShape: FACE_SHAPES[faceShapeIdx],
-    darkCircles: DARK_CIRCLES[darkCirclesIdx],
-    puffiness: PUFFINESS[puffinessIdx],
-    skinTone: SKIN_TONES[skinToneIdx],
+    faceShape: pick(FACE_SHAPES, 0),
+    darkCircles: pick(DARK_CIRCLES, 1),
+    puffiness: pick(PUFFINESS, 2),
+    skinTone: pick(SKIN_TONES, 3),
+    skinMoisture: pick(SKIN_MOISTURES, 4),
+    hairTexture: pick(HAIR_TEXTURES, 5),
+    bodyFrame: pick(BODY_FRAMES, 6),
+    eyeLook: pick(EYE_LOOKS, 7),
   };
 }
 

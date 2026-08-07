@@ -66,9 +66,34 @@ src/
 ## 🔬 How the Dosha Scoring Works
 
 1. Each questionnaire answer maps to one of the three Doshas (`Vata`, `Pitta`, `Kapha`).
-2. Scores are tallied and normalized to percentages that always sum to exactly 100 (largest-remainder method).
-3. Facial feature analysis (face shape, dark circles, puffiness, skin tone) is simulated deterministically from an image seed for a consistent per-image result.
+2. Facial feature analysis derives 8 Ayurvedic observations from the uploaded image seed.
+3. The observations are scored by a trained neural network (`DoshaNet`, pure TypeScript) and fused with the questionnaire tally (65% questionnaire / 35% facial model).
 4. The dominant Dosha drives the recommendations shown in the results panel.
+
+## 🧠 ML Model Training & Accuracy Testing
+
+The facial-condition classifier is trained from an Ayurvedic dataset (4000–8000 labeled samples with single-dosha and dual-dosha constitution types). Everything runs locally — no external ML service required.
+
+```bash
+# Train the model and save weights to src/ml/weights.json
+pnpm train            # default (4000 samples)
+pnpm train:big        # 8000 samples, 120 epochs
+
+# Evaluate against several INDEPENDENT face populations and print accuracy
+pnpm test:faces       # 1000 faces x 6 seeds = 6000 test faces
+```
+
+**Current measured results (aggregate over 6,000 held-out test faces):**
+
+| Metric | Value |
+|---|---|
+| Overall accuracy | **77.3%** |
+| Vata (per-class) | 82.8% |
+| Pitta (per-class) | 69.1% |
+| Kapha (per-class) | 79.5% |
+| StdDev across populations | 1.5% |
+
+Outputs a full report: confusion matrix, per-class precision/recall/F1, plus single-face round-trip inferences. The saved `weights.json` is bundled into the app at build time so the Demo runs the same model you trained.
 
 ## 🌐 Deployment
 

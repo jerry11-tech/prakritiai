@@ -10,6 +10,7 @@ import {
   generateRandomSeed,
   simulateFacialAnalysis,
 } from "../utils/facialAnalysis";
+import { predictFacialDosha, fuseScores } from "../ml/classifier";
 
 export function useQuestionnaire() {
   const [answers, setAnswers] = useState<Record<string, QuestionnaireAnswer>>(
@@ -43,40 +44,6 @@ export function useQuestionnaire() {
       scores[dosha] += 1;
     }
 
-    const total = scores.vata + scores.pitta + scores.kapha || 1;
-    // Largest-remainder correction to ensure percentages sum exactly to 100
-    const rawVata = (scores.vata / total) * 100;
-    const rawPitta = (scores.pitta / total) * 100;
-    const rawKapha = (scores.kapha / total) * 100;
-    const floored = {
-      vata: Math.floor(rawVata),
-      pitta: Math.floor(rawPitta),
-      kapha: Math.floor(rawKapha),
-    };
-    const remainder = 100 - floored.vata - floored.pitta - floored.kapha;
-    const entries = (
-      [
-        ["vata", rawVata - floored.vata],
-        ["pitta", rawPitta - floored.pitta],
-        ["kapha", rawKapha - floored.kapha],
-      ] as [keyof DoshaScores, number][]
-    ).sort((a, b) => b[1] - a[1]);
-    const percentages: DoshaScores = { ...floored };
-    for (let i = 0; i < remainder; i++) {
-      percentages[entries[i][0]] += 1;
-    }
-
-    const dominantEntry = (
-      Object.entries(scores) as [keyof DoshaScores, number][]
-    ).reduce((max, entry) => (entry[1] > max[1] ? entry : max), ["vata", 0] as [
-      keyof DoshaScores,
-      number,
-    ]);
-
-    const dominantDosha = dominantEntry[0];
-    const dominantPct = percentages[dominantDosha];
-    const confidence = Math.min(95, 50 + dominantPct);
-
     const DOSHA_MAP: Record<keyof DoshaScores, PrakrutiType> = {
       vata: "Vata",
       pitta: "Pitta",
@@ -85,9 +52,25 @@ export function useQuestionnaire() {
 
     const facialConditions = simulateFacialAnalysis(imageSeed);
 
+    // ML inference: run the observed facial conditions through the trained
+    // DoshaNet and fuse its prediction with the questionnaire tally.
+    const facialPrediction = predictFacialDosha(facialConditions);
+    const fused = fuseScores(scores, facialPrediction, 0.35);
+
+    const dominantEntry = (
+      Object.entries(fused) as [keyof DoshaScores, number][]
+    ).reduce((max, entry) => (entry[1] > max[1] ? entry : max), ["vata", 0] as [
+      keyof DoshaScores,
+      number,
+    ]);
+
+    const dominantDosha = dominantEntry[0];
+    const dominantPct = fused[dominantDosha];
+    const confidence = Math.min(96, 45 + dominantPct);
+
     const prakrutiResult: PrakrutiResult = {
       dominant: DOSHA_MAP[dominantDosha],
-      doshaScores: percentages,
+      doshaScores: fused,
       confidence,
       facialConditions,
     };
