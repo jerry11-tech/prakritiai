@@ -100,7 +100,7 @@ export function Hero() {
           className="relative rounded-2xl overflow-hidden border border-primary/20 shadow-2xl max-w-2xl mx-auto"
         >
           <img
-            src="/assets/generated/hero-prakriti.dim_1200x600.jpg"
+            src="./assets/generated/hero-prakriti.dim_1200x600.jpg"
             alt="PrakritiAI — Ayurvedic intelligence visualization"
             className="w-full h-auto object-cover"
             loading="eager"
