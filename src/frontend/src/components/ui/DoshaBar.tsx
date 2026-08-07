@@ -22,7 +22,7 @@ export function DoshaBar({ dosha, score, width }: DoshaBarProps) {
       </span>
       <div className="flex-1 h-2 bg-muted/30 rounded-full overflow-hidden">
         <div
-          className={`h-full rounded-full ${bar} transition-all duration-[1400ms] ease-out`}
+          className={`h-full rounded-full ${bar} transition-all duration-1400 ease-out`}
           style={{ width: `${width}%` }}
         />
       </div>

@@ -2,13 +2,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useInView } from "../../hooks/useInView";
 
 const TECH = [
-  { icon: "🐍", name: "Python", role: "Core Backend" },
-  { icon: "👁️", name: "OpenCV", role: "Face Detection" },
-  { icon: "🤖", name: "Scikit-learn", role: "Prakriti ML Model" },
-  { icon: "👀", name: "MediaPipe", role: "Face Landmarks" },
-  { icon: "⚡", name: "Flask", role: "API Backend" },
-  { icon: "📊", name: "Pandas / NumPy", role: "Data Processing" },
-  { icon: "🌐", name: "React + TypeScript", role: "Frontend Interface" },
+  { icon: "⚛️", name: "React 18 + TS", role: "Frontend Interface" },
+  { icon: "⚡", name: "Vite", role: "Build & Dev Server" },
+  { icon: "🎨", name: "Tailwind CSS", role: "Design System" },
+  { icon: "🧩", name: "Radix UI", role: "Accessible Components" },
+  { icon: "🌀", name: "Motion", role: "Smooth Animations" },
+  { icon: "📦", name: "TanStack Query", role: "Server State" },
+  { icon: "🧬", name: "Dosha Algorithm", role: "Prakriti Scoring Engine" },
   {
     icon: "🔗",
     name: "Hybrid Pipeline",

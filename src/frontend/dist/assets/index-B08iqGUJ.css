@@ -873,6 +873,9 @@ video {
 .mt-2 {
   margin-top: 0.5rem;
 }
+.mt-3 {
+  margin-top: 0.75rem;
+}
 .mt-4 {
   margin-top: 1rem;
 }
@@ -1014,6 +1017,9 @@ video {
 }
 .h-\[1\.15rem\] {
   height: 1.15rem;
+}
+.h-\[200px\] {
+  height: 200px;
 }
 .h-\[500px\] {
   height: 500px;
@@ -1469,6 +1475,11 @@ video {
 }
 .overflow-x-hidden {
   overflow-x: hidden;
+}
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .whitespace-nowrap {
   white-space: nowrap;
@@ -1967,6 +1978,12 @@ video {
 .text-\[0\.8rem\] {
   font-size: 0.8rem;
 }
+.text-\[10px\] {
+  font-size: 10px;
+}
+.text-\[11px\] {
+  font-size: 11px;
+}
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
@@ -2008,6 +2025,9 @@ video {
 .uppercase {
   text-transform: uppercase;
 }
+.capitalize {
+  text-transform: capitalize;
+}
 .italic {
   font-style: italic;
 }
@@ -2046,6 +2066,9 @@ video {
 .text-accent-foreground {
   color: oklch(var(--accent-foreground));
 }
+.text-accent\/80 {
+  color: oklch(var(--accent) / 0.8);
+}
 .text-card-foreground {
   color: oklch(var(--card-foreground));
 }
@@ -2061,6 +2084,9 @@ video {
 }
 .text-destructive-foreground {
   color: oklch(var(--destructive-foreground));
+}
+.text-destructive\/60 {
+  color: oklch(var(--destructive) / 0.6);
 }
 .text-foreground {
   color: oklch(var(--foreground));
@@ -2116,6 +2142,9 @@ video {
 }
 .opacity-0 {
   opacity: 0;
+}
+.opacity-30 {
+  opacity: 0.3;
 }
 .opacity-40 {
   opacity: 0.4;
@@ -2628,6 +2657,11 @@ video {
 
 .hover\:text-accent-foreground:hover {
   color: oklch(var(--accent-foreground));
+}
+
+.hover\:text-destructive:hover {
+  --tw-text-opacity: 1;
+  color: oklch(var(--destructive) / var(--tw-text-opacity, 1));
 }
 
 .hover\:text-foreground:hover {

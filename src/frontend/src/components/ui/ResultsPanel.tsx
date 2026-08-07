@@ -13,11 +13,12 @@ interface ResultsPanelProps {
   doshaOrder: PrakrutiType[];
   onReset: () => void;
   children: ReactNode;
+  saved?: boolean;
 }
 
 const DOT_COLORS = ["bg-accent", "bg-primary", "bg-chart-3"];
 
-export function ResultsPanel({ result, onReset, children }: ResultsPanelProps) {
+export function ResultsPanel({ result, onReset, children, saved }: ResultsPanelProps) {
   const stats = [
     {
       label: "Face Shape",
@@ -135,6 +136,12 @@ export function ResultsPanel({ result, onReset, children }: ResultsPanelProps) {
       >
         ↺ Start New Analysis
       </Button>
+
+      {saved ? (
+        <div className="mt-3 text-center text-[11px] text-accent/80">
+          ✓ Saved to your analysis history
+        </div>
+      ) : null}
     </div>
   );
 }
