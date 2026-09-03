@@ -43,6 +43,8 @@ jobs:
         run: |
           cd src/frontend
           pnpm build
+          cp dist/index.html dist/404.html
+          touch dist/.nojekyll
 
       - name: Upload GitHub Pages Artifact
         uses: actions/upload-pages-artifact@v3
