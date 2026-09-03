@@ -126,16 +126,6 @@ export function LoginPage() {
             </p>
 
             <div className="flex justify-center gap-2 pt-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail("admin@prakritiai.org");
-                  setPassword("admin123");
-                }}
-                className="text-[11px] bg-secondary text-primary border border-primary/30 px-2.5 py-1 rounded-lg hover:bg-secondary/80 font-bold transition-all"
-              >
-                ⚡ Auto-fill Admin
-              </button>
               <Link to="/expert/login">
                 <Button size="sm" variant="outline" className="text-[11px] border-border text-muted-foreground hover:text-foreground">
                   🛡️ Expert Portal
