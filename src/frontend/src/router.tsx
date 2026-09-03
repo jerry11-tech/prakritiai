@@ -1,4 +1,4 @@
-import { createRootRoute, createRoute, createRouter, Outlet, Link } from "@tanstack/react-router";
+import { createRootRoute, createRoute, createRouter, createHashHistory, Outlet, Link } from "@tanstack/react-router";
 import { AuthProvider, useAuth } from "./lib/AuthContext";
 import { HomePage } from "./pages/HomePage";
 import { AnalysisPage } from "./pages/AnalysisPage";
@@ -167,7 +167,10 @@ const routeTree = rootRoute.addChildren([
   adminRoute,
 ]);
 
-export const router = createRouter({ routeTree });
+export const router = createRouter({
+  routeTree,
+  history: createHashHistory(),
+});
 
 declare module "@tanstack/react-router" {
   interface Register {
