@@ -46,6 +46,7 @@ from services.auth_service import (
     toggle_user_active_status,
 )
 from services.excel_sync import EXCEL_FILE_PATH, sync_excel_file
+from services.emergency_backup import execute_3tier_emergency_backup
 from services.expert_service import get_inter_rater_stats, submit_expert_assessment
 from services.expert_review_service import (
     generate_verified_pdf,
@@ -523,6 +524,21 @@ def get_research_dashboard(admin: Dict[str, Any] = Depends(require_admin)):
 @app.post("/api/sync-excel")
 def trigger_sync_excel(admin: Dict[str, Any] = Depends(require_admin)):
     return sync_excel_file()
+
+
+@app.post("/api/admin/emergency-backup")
+def trigger_emergency_backup(admin: Dict[str, Any] = Depends(require_admin)):
+    """Executes Smart 3-Tier Emergency Backup (Database, Excel Mirror, JSON Audit Dump)."""
+    backup_res = execute_3tier_emergency_backup()
+    log_audit_event(
+        user_id=admin["user_id"],
+        email=admin["email"],
+        role=admin["role"],
+        action="EMERGENCY_BACKUP",
+        resource="system",
+        details=json.dumps(backup_res),
+    )
+    return backup_res
 
 
 @app.get("/api/download-excel")
