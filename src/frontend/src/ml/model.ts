@@ -73,7 +73,10 @@ export class DoshaNet {
     return { label: best, probs };
   }
 
-  // Trains via mini-batch SGD with momentum.
+  // Trains via mini-batch SGD (momentum) or Adam, with optional L2 weight
+  // decay and per-epoch learning-rate decay. Adam + L2 + lr schedule was
+  // measured to lift held-out and cross-face accuracy substantially over
+  // plain SGD while staying compact enough for the browser.
   train(
     X: number[][],
     Y: number[],
@@ -82,6 +85,10 @@ export class DoshaNet {
       lr?: number;
       batchSize?: number;
       momentum?: number;
+      optimizer?: "sgd" | "adam";
+      weightDecay?: number;
+      lrDecay?: number;
+      minLr?: number;
       onEpoch?: (epoch: number, loss: number) => void;
     } = {},
   ) {
@@ -89,17 +96,38 @@ export class DoshaNet {
     const lr = opts.lr ?? 0.15;
     const batchSize = opts.batchSize ?? 32;
     const momentum = opts.momentum ?? 0.9;
+    const optimizer = opts.optimizer ?? "sgd";
+    const weightDecay = opts.weightDecay ?? 0;
+    const lrDecay = opts.lrDecay ?? 0;
+    const minLr = opts.minLr ?? 0;
 
-    // Momentum buffers.
+    // SGD momentum buffers.
     const vW1 = zeros(this.inputSize, this.hiddenSize);
     const vb1 = new Array(this.hiddenSize).fill(0);
     const vW2 = zeros(this.hiddenSize, this.outputSize);
     const vb2 = new Array(this.outputSize).fill(0);
 
+    // Adam first/second moments + bias-corrected steps.
+    const mW1 = zeros(this.inputSize, this.hiddenSize);
+    const vfW1 = zeros(this.inputSize, this.hiddenSize);
+    const mb1 = new Array(this.hiddenSize).fill(0);
+    const vfb1 = new Array(this.hiddenSize).fill(0);
+    const mW2 = zeros(this.hiddenSize, this.outputSize);
+    const vfW2 = zeros(this.hiddenSize, this.outputSize);
+    const mb2 = new Array(this.outputSize).fill(0);
+    const vfb2 = new Array(this.outputSize).fill(0);
+    const beta1 = 0.9;
+    const beta2 = 0.999;
+    const adamEps = 1e-8;
+    let step = 0;
+
     const n = X.length;
     const idx = Array.from({ length: n }, (_, i) => i);
 
     for (let epoch = 0; epoch < epochs; epoch++) {
+      // Geometric LR decay, floored at minLr.
+      const epochLr = Math.max(lr * Math.pow(lrDecay, epoch), minLr);
+
       // Shuffle.
       for (let i = n - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -179,27 +207,68 @@ export class DoshaNet {
           }
         }
 
-        // Apply gradients with momentum.
-        const scale = lr / size;
-        for (let i = 0; i < this.inputSize; i++) {
+        // Apply gradients.
+        if (optimizer === "adam") {
+          step += 1;
+          const c1 = 1 - Math.pow(beta1, step);
+          const c2 = 1 - Math.pow(beta2, step);
+          for (let i = 0; i < this.inputSize; i++) {
+            for (let j = 0; j < this.hiddenSize; j++) {
+              const g = gW1[i][j] + weightDecay * this.W1[i][j];
+              mW1[i][j] = beta1 * mW1[i][j] + (1 - beta1) * g;
+              vfW1[i][j] = beta2 * vfW1[i][j] + (1 - beta2) * g * g;
+              this.W1[i][j] -=
+                epochLr *
+                (mW1[i][j] / c1) /
+                (Math.sqrt(vfW1[i][j] / c2) + adamEps);
+            }
+          }
           for (let j = 0; j < this.hiddenSize; j++) {
-            vW1[i][j] = momentum * vW1[i][j] - scale * gW1[i][j];
-            this.W1[i][j] += vW1[i][j];
+            mb1[j] = beta1 * mb1[j] + (1 - beta1) * gb1[j];
+            vfb1[j] = beta2 * vfb1[j] + (1 - beta2) * gb1[j] * gb1[j];
+            this.b1[j] -= epochLr * (mb1[j] / c1) / (Math.sqrt(vfb1[j] / c2) + adamEps);
           }
-        }
-        for (let j = 0; j < this.hiddenSize; j++) {
-          vb1[j] = momentum * vb1[j] - scale * gb1[j];
-          this.b1[j] += vb1[j];
-        }
-        for (let i = 0; i < this.hiddenSize; i++) {
+          for (let i = 0; i < this.hiddenSize; i++) {
+            for (let j = 0; j < this.outputSize; j++) {
+              const g = gW2[i][j] + weightDecay * this.W2[i][j];
+              mW2[i][j] = beta1 * mW2[i][j] + (1 - beta1) * g;
+              vfW2[i][j] = beta2 * vfW2[i][j] + (1 - beta2) * g * g;
+              this.W2[i][j] -=
+                epochLr *
+                (mW2[i][j] / c1) /
+                (Math.sqrt(vfW2[i][j] / c2) + adamEps);
+            }
+          }
           for (let j = 0; j < this.outputSize; j++) {
-            vW2[i][j] = momentum * vW2[i][j] - scale * gW2[i][j];
-            this.W2[i][j] += vW2[i][j];
+            mb2[j] = beta1 * mb2[j] + (1 - beta1) * gb2[j];
+            vfb2[j] = beta2 * vfb2[j] + (1 - beta2) * gb2[j] * gb2[j];
+            this.b2[j] -= epochLr * (mb2[j] / c1) / (Math.sqrt(vfb2[j] / c2) + adamEps);
           }
-        }
-        for (let j = 0; j < this.outputSize; j++) {
-          vb2[j] = momentum * vb2[j] - scale * gb2[j];
-          this.b2[j] += vb2[j];
+        } else {
+          // SGD with momentum (gradients pre-scaled by 1/batchSize).
+          const scale = epochLr / size;
+          for (let i = 0; i < this.inputSize; i++) {
+            for (let j = 0; j < this.hiddenSize; j++) {
+              const g = gW1[i][j] + weightDecay * this.W1[i][j];
+              vW1[i][j] = momentum * vW1[i][j] - scale * g;
+              this.W1[i][j] += vW1[i][j];
+            }
+          }
+          for (let j = 0; j < this.hiddenSize; j++) {
+            vb1[j] = momentum * vb1[j] - scale * gb1[j];
+            this.b1[j] += vb1[j];
+          }
+          for (let i = 0; i < this.hiddenSize; i++) {
+            for (let j = 0; j < this.outputSize; j++) {
+              const g = gW2[i][j] + weightDecay * this.W2[i][j];
+              vW2[i][j] = momentum * vW2[i][j] - scale * g;
+              this.W2[i][j] += vW2[i][j];
+            }
+          }
+          for (let j = 0; j < this.outputSize; j++) {
+            vb2[j] = momentum * vb2[j] - scale * gb2[j];
+            this.b2[j] += vb2[j];
+          }
         }
       }
 

@@ -12,7 +12,7 @@
     "check": "biome check src",
     "fix": "biome check --write src",
     "train": "node src/ml/train.ts",
-    "train:big": "node src/ml/train.ts 8000 120 42",
+    "train:big": "node src/ml/train.ts 8000 250 42",
     "test:faces": "node src/ml/test-accuracy.ts"
   },
   "devDependencies": {

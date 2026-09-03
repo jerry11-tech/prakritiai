@@ -4,162 +4,158 @@
 
 @layer base {
   :root {
-    --font-display: "Space Grotesk";
-    --font-body: "DM Sans";
-    --font-mono: monospace;
-    --radius: 0.625rem;
+    --font-display: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-serif: "Lora", Georgia, serif;
+    --radius: 0.75rem;
 
-    --background: 0.08 0.015 280;
-    --foreground: 0.95 0.01 280;
-    --card: 0.12 0.018 280;
-    --card-foreground: 0.95 0.01 280;
-    --popover: 0.15 0.02 280;
-    --popover-foreground: 0.95 0.01 280;
+    /* Main Brand Palette - Light Mode */
+    --background: #F8FAF8;
+    --foreground: #17221B;
+    --card: #FFFFFF;
+    --card-foreground: #17221B;
+    --popover: #FFFFFF;
+    --popover-foreground: #17221B;
 
-    --primary: 0.68 0.22 280;
-    --primary-foreground: 0.08 0.015 280;
+    --primary: #2F6B45;
+    --primary-foreground: #FFFFFF;
 
-    --secondary: 0.18 0.025 280;
-    --secondary-foreground: 0.9 0.01 280;
-    --muted: 0.18 0.025 280;
-    --muted-foreground: 0.58 0.015 280;
+    --secondary: #EAF4EC;
+    --secondary-foreground: #2F6B45;
+    --muted: #F0F4F1;
+    --muted-foreground: #66736A;
 
-    --accent: 0.7 0.2 170;
-    --accent-foreground: 0.08 0.015 170;
+    --accent: #2F6B45;
+    --accent-foreground: #FFFFFF;
 
-    --destructive: 0.55 0.22 25;
-    --destructive-foreground: 0.95 0.01 25;
+    --destructive: #C94B4B;
+    --destructive-foreground: #FFFFFF;
 
-    --border: 0.22 0.025 280;
-    --input: 0.22 0.025 280;
-    --ring: 0.68 0.22 280;
+    --border: #E2E8E3;
+    --input: #E2E8E3;
+    --ring: #2F6B45;
 
-    --chart-1: 0.68 0.22 280;
-    --chart-2: 0.7 0.2 170;
-    --chart-3: 0.72 0.18 45;
-    --chart-4: 0.58 0.15 25;
-    --chart-5: 0.65 0.18 145;
+    /* Prakriti Specific Dosha Tokens */
+    --vata-primary: #4F86C6;
+    --vata-light: #EAF3FB;
+    --vata-soft: #DCECF9;
+    --vata-text: #28527A;
 
-    --sidebar: 0.12 0.018 280;
-    --sidebar-foreground: 0.95 0.01 280;
-    --sidebar-primary: 0.68 0.22 280;
-    --sidebar-primary-foreground: 0.08 0.015 280;
-    --sidebar-accent: 0.18 0.025 280;
-    --sidebar-accent-foreground: 0.9 0.01 280;
-    --sidebar-border: 0.22 0.025 280;
-    --sidebar-ring: 0.68 0.22 280;
+    --pitta-primary: #E8753D;
+    --pitta-light: #FFF0E7;
+    --pitta-soft: #FBE1D2;
+    --pitta-text: #9A4523;
+
+    --kapha-primary: #4F9A67;
+    --kapha-light: #EAF5ED;
+    --kapha-soft: #DCEEDF;
+    --kapha-text: #2F6842;
+
+    /* Sidebar Tokens */
+    --sidebar: #FFFFFF;
+    --sidebar-foreground: #17221B;
+    --sidebar-primary: #2F6B45;
+    --sidebar-primary-foreground: #FFFFFF;
+    --sidebar-accent: #EAF4EC;
+    --sidebar-accent-foreground: #2F6B45;
+    --sidebar-border: #E2E8E3;
+    --sidebar-ring: #2F6B45;
   }
 
   .dark {
-    --background: 0.08 0.015 280;
-    --foreground: 0.95 0.01 280;
-    --card: 0.12 0.018 280;
-    --card-foreground: 0.95 0.01 280;
-    --popover: 0.15 0.02 280;
-    --popover-foreground: 0.95 0.01 280;
+    /* Dark Mode Palette */
+    --background: #101713;
+    --foreground: #F2F6F3;
+    --card: #17211B;
+    --card-foreground: #F2F6F3;
+    --popover: #17211B;
+    --popover-foreground: #F2F6F3;
 
-    --primary: 0.68 0.22 280;
-    --primary-foreground: 0.08 0.015 280;
+    --primary: #6EAF82;
+    --primary-foreground: #101713;
 
-    --secondary: 0.18 0.025 280;
-    --secondary-foreground: 0.9 0.01 280;
-    --muted: 0.18 0.025 280;
-    --muted-foreground: 0.58 0.015 280;
+    --secondary: #2A382F;
+    --secondary-foreground: #F2F6F3;
+    --muted: #243028;
+    --muted-foreground: #A0B0A5;
 
-    --accent: 0.7 0.2 170;
-    --accent-foreground: 0.08 0.015 170;
+    --accent: #6EAF82;
+    --accent-foreground: #101713;
 
-    --destructive: 0.55 0.22 25;
-    --destructive-foreground: 0.95 0.01 25;
+    --destructive: #E55B5B;
+    --destructive-foreground: #FFFFFF;
 
-    --border: 0.22 0.025 280;
-    --input: 0.22 0.025 280;
-    --ring: 0.68 0.22 280;
+    --border: #2A382F;
+    --input: #2A382F;
+    --ring: #6EAF82;
 
-    --chart-1: 0.68 0.22 280;
-    --chart-2: 0.7 0.2 170;
-    --chart-3: 0.72 0.18 45;
-    --chart-4: 0.58 0.15 25;
-    --chart-5: 0.65 0.18 145;
+    /* Muted Dosha Tokens in Dark Mode */
+    --vata-light: #1E2D3D;
+    --vata-text: #9EC5ED;
+    --vata-soft: #2B4259;
 
-    --sidebar: 0.12 0.018 280;
-    --sidebar-foreground: 0.95 0.01 280;
-    --sidebar-primary: 0.68 0.22 280;
-    --sidebar-primary-foreground: 0.08 0.015 280;
-    --sidebar-accent: 0.18 0.025 280;
-    --sidebar-accent-foreground: 0.9 0.01 280;
-    --sidebar-border: 0.22 0.025 280;
-    --sidebar-ring: 0.68 0.22 280;
+    --pitta-light: #3D251C;
+    --pitta-text: #F7B092;
+    --pitta-soft: #593527;
+
+    --kapha-light: #1F3326;
+    --kapha-text: #9EDDB5;
+    --kapha-soft: #2F4C38;
+
+    /* Sidebar Dark Mode */
+    --sidebar: #17211B;
+    --sidebar-foreground: #F2F6F3;
+    --sidebar-primary: #6EAF82;
+    --sidebar-primary-foreground: #101713;
+    --sidebar-accent: #2A382F;
+    --sidebar-accent-foreground: #6EAF82;
+    --sidebar-border: #2A382F;
+    --sidebar-ring: #6EAF82;
   }
 
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-body antialiased;
+    @apply bg-background text-foreground font-body antialiased selection:bg-secondary selection:text-primary transition-colors duration-200;
   }
-}
-
-@font-face {
-  font-family: "Space Grotesk";
-  src: url("/assets/fonts/SpaceGrotesk.woff2") format("woff2");
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "DM Sans";
-  src: url("/assets/fonts/DMSans.woff2") format("woff2");
-  font-display: swap;
 }
 
 @layer utilities {
   .transition-smooth {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .gradient-hero {
-    background: linear-gradient(
-      135deg,
-      oklch(var(--primary)) 0%,
-      oklch(var(--accent)) 50%,
-      oklch(0.72 0.18 45) 100%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    background-size: 200% auto;
-    animation: shimmer 4s linear infinite;
+  .badge-vata {
+    background-color: var(--vata-light);
+    color: var(--vata-text);
+    border: 1px solid var(--vata-soft);
   }
 
-  @keyframes shimmer {
-    0% {
-      background-position: 200% center;
-    }
-    100% {
-      background-position: -200% center;
-    }
+  .badge-pitta {
+    background-color: var(--pitta-light);
+    color: var(--pitta-text);
+    border: 1px solid var(--pitta-soft);
   }
 
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
+  .badge-kapha {
+    background-color: var(--kapha-light);
+    color: var(--kapha-text);
+    border: 1px solid var(--kapha-soft);
   }
 
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
+  .text-vata { color: var(--vata-primary); }
+  .text-pitta { color: var(--pitta-primary); }
+  .text-kapha { color: var(--kapha-primary); }
+
+  .bg-vata { background-color: var(--vata-primary); }
+  .bg-pitta { background-color: var(--pitta-primary); }
+  .bg-kapha { background-color: var(--kapha-primary); }
 
   @keyframes fadeUp {
     from {
       opacity: 0;
-      transform: translateY(28px);
+      transform: translateY(12px);
     }
     to {
       opacity: 1;
@@ -167,35 +163,7 @@
     }
   }
 
-  @keyframes scaleIn {
-    from {
-      opacity: 0;
-      transform: scale(0.85);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  .animate-float {
-    animation: float 5s ease-in-out infinite;
-  }
-
   .animate-fadeUp {
-    animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  .animate-scaleIn {
-    animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
+    animation: fadeUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 }

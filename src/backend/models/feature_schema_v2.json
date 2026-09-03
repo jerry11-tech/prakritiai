@@ -1,0 +1,46 @@
+{
+  "version": "v2",
+  "featureColumns": [
+    "appetite_regularity",
+    "body_frame_breadth",
+    "body_frame_length",
+    "bowel_habit",
+    "climate_comfort",
+    "decision_style",
+    "dream_theme",
+    "emotional_stability",
+    "eye_size",
+    "eyeball_movement",
+    "food_temperature_pref",
+    "hair_density",
+    "hair_oiliness",
+    "hunger_speed",
+    "joints_sound",
+    "learning_grasping",
+    "memory_type",
+    "nail_texture",
+    "physical_stamina",
+    "skin_color",
+    "skin_moisture",
+    "skin_temperature",
+    "sleep_depth",
+    "speaking_pace",
+    "sweating_amount",
+    "teeth_type",
+    "temperament_nature",
+    "voice_pitch",
+    "walking_speed",
+    "water_intake_volume",
+    "weight_change_trend"
+  ],
+  "labelMap": {
+    "Vata": 0,
+    "Pitta": 1,
+    "Kapha": 2
+  },
+  "invLabelMap": {
+    "0": "Vata",
+    "1": "Pitta",
+    "2": "Kapha"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "modelName": "SVM",
+  "version": "v1",
+  "trainedAt": "2026-09-01 00:47:02",
+  "datasetSize": 481,
+  "trainSamples": 360,
+  "testSamples": 121,
+  "cvAccuracyMean": 0.975,
+  "cvAccuracyStd": 0.022222222222222233,
+  "cvF1MacroMean": 0.9751277653885108,
+  "testAccuracy": 0.9669421487603306,
+  "testPrecisionMacro": 0.9665582955056639,
+  "testRecallMacro": 0.9676413255360624,
+  "testF1Macro": 0.967005102132246,
+  "testF1Weighted": 0.9669638560900516,
+  "cohensKappa": 0.9502824858757062,
+  "confusionMatrix": [
+    [
+      43,
+      0,
+      2
+    ],
+    [
+      1,
+      37,
+      0
+    ],
+    [
+      0,
+      1,
+      37
+    ]
+  ],
+  "classNames": [
+    "Vata",
+    "Pitta",
+    "Kapha"
+  ],
+  "perClassPerformance": {
+    "Vata": {
+      "precision": 0.9772727272727273,
+      "recall": 0.9555555555555556,
+      "f1": 0.9662921348314608,
+      "count": 45
+    },
+    "Pitta": {
+      "precision": 0.9736842105263158,
+      "recall": 0.9736842105263158,
+      "f1": 0.9736842105263158,
+      "count": 38
+    },
+    "Kapha": {
+      "precision": 0.9487179487179487,
+      "recall": 0.9736842105263158,
+      "f1": 0.9610389610389611,
+      "count": 38
+    }
+  },
+  "topFeatures": [],
+  "allModelCv": {
+    "RandomForest": 0.9722222222222221,
+    "XGBoost": 0.9555555555555555,
+    "GradientBoosting": 0.9472222222222223,
+    "SVM": 0.975,
+    "LogisticRegression": 0.9666666666666668,
+    "DecisionTree": 0.9416666666666668
+  }
+}

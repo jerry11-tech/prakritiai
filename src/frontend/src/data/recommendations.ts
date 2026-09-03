@@ -1,4 +1,4 @@
-import type { PrakrutiType } from "../types/prakruti";
+import type { PrimaryDosha, PrakrutiType } from "../types/prakruti";
 
 export interface RecommendationSet {
   tagline: string;
@@ -11,7 +11,7 @@ export interface RecommendationSet {
   avoid: string[];
 }
 
-export const RECOMMENDATIONS: Record<PrakrutiType, RecommendationSet> = {
+export const RECOMMENDATIONS: Record<PrimaryDosha, RecommendationSet> = {
   Vata: {
     tagline: "Warm, Ground, Nourish",
     description:

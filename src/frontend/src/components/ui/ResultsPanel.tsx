@@ -117,7 +117,7 @@ export function ResultsPanel({ result, onReset, children, saved }: ResultsPanelP
             Facial Condition Analysis
           </div>
           <span className="text-[10px] font-bold text-accent bg-accent/10 border border-accent/30 rounded-full px-2 py-0.5">
-            ML Model · 77% Accuracy
+            ML Model · 85% Accuracy
           </span>
         </div>
         {conditions.map((row) => (

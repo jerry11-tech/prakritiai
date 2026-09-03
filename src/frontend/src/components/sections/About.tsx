@@ -1,87 +1,84 @@
-import { Badge } from "@/components/ui/badge";
 import { useInView } from "../../hooks/useInView";
-
-const PILLS = [
-  "Face Shape",
-  "Dark Circles",
-  "Puffy Face",
-  "Skin Texture",
-  "Vata Dosha",
-  "Pitta Dosha",
-  "Kapha Dosha",
-  "Diet Plan",
-  "Lifestyle",
-  "Herbs",
-];
 
 export function About() {
   const { ref, inView } = useInView();
 
   return (
-    <section id="about" className="py-20 md:py-24 px-6 md:px-12 bg-muted/20">
-      <div
-        ref={ref}
-        className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-14 items-center"
-      >
-        {/* Left: text */}
-        <div className={inView ? "animate-fadeUp" : "opacity-0"}>
-          <div className="flex items-center gap-2 text-xs font-bold tracking-widest text-accent uppercase mb-4">
-            <span className="w-4 h-0.5 bg-accent rounded-full" />
-            About the Project
+    <section id="about" className="py-20 md:py-28 px-6 md:px-12 bg-muted/20 border-b border-border/30">
+      <div ref={ref} className="max-w-5xl mx-auto text-center">
+        {/* Subtitle / Badge */}
+        <div className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-accent uppercase mb-3">
+          <span className="w-4 h-0.5 bg-accent rounded-full" />
+          ANCIENT × MODERN
+          <span className="w-4 h-0.5 bg-accent rounded-full" />
+        </div>
+
+        <h2 className="font-display font-extrabold text-3xl md:text-4xl leading-tight mb-4">
+          Ancient Wisdom. Modern Intelligence.
+        </h2>
+
+        <p className="text-muted-foreground max-w-2xl mx-auto text-base mb-12 leading-relaxed">
+          Traditional Ayurvedic constitution concepts meet state-of-the-art computer vision and machine learning technology.
+        </p>
+
+        {/* 2-Card Side-by-Side Comparison */}
+        <div className="grid grid-cols-1 md:grid-cols-11 gap-6 items-center">
+          {/* Ayurveda Card */}
+          <div className="md:col-span-5 bg-card border border-accent/30 rounded-2xl p-7 text-left shadow-md hover:shadow-lg transition-all">
+            <div className="w-10 h-10 rounded-xl bg-accent/15 border border-accent/30 text-accent flex items-center justify-center text-xl font-bold mb-4">
+              🌿
+            </div>
+            <h3 className="font-display font-bold text-xl text-foreground mb-2">
+              AYURVEDA
+            </h3>
+            <p className="text-xs text-muted-foreground mb-4">
+              5,000-year-old constitutional science of body humor balance.
+            </p>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-center gap-2 text-foreground font-semibold">
+                <span className="w-2 h-2 rounded-full bg-accent" /> Vata (Air & Space)
+              </li>
+              <li className="flex items-center gap-2 text-foreground font-semibold">
+                <span className="w-2 h-2 rounded-full bg-primary" /> Pitta (Fire & Water)
+              </li>
+              <li className="flex items-center gap-2 text-foreground font-semibold">
+                <span className="w-2 h-2 rounded-full bg-chart-3" /> Kapha (Earth & Water)
+              </li>
+            </ul>
           </div>
-          <h2 className="font-display font-extrabold text-3xl md:text-4xl leading-tight mb-5">
-            Where Ancient Wisdom
-            <br />
-            Meets Modern AI
-          </h2>
-          <p className="text-muted-foreground leading-relaxed mb-6">
-            This system bridges 5,000 years of Ayurvedic science with
-            state-of-the-art computer vision and machine learning. By analyzing
-            your facial structure and lifestyle patterns, it classifies your
-            unique Prakriti with clinical precision.
-          </p>
-          <div className="border-l-2 border-primary/50 bg-primary/6 rounded-r-xl pl-4 py-3 text-sm text-primary/80 italic leading-relaxed">
-            A hybrid approach combining CV-based facial analysis + questionnaire
-            analysis for superior accuracy that neither method achieves alone.
+
+          {/* Multiplication Symbol */}
+          <div className="md:col-span-1 text-2xl font-bold text-accent">
+            ×
+          </div>
+
+          {/* Technology Card */}
+          <div className="md:col-span-5 bg-card border border-primary/30 rounded-2xl p-7 text-left shadow-md hover:shadow-lg transition-all">
+            <div className="w-10 h-10 rounded-xl bg-primary/15 border border-primary/30 text-primary flex items-center justify-center text-xl font-bold mb-4">
+              🧠
+            </div>
+            <h3 className="font-display font-bold text-xl text-foreground mb-2">
+              TECHNOLOGY
+            </h3>
+            <p className="text-xs text-muted-foreground mb-4">
+              Pure client-side machine learning neural network classification engine.
+            </p>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-center gap-2 text-foreground font-semibold">
+                <span className="w-2 h-2 rounded-full bg-primary" /> Computer Vision
+              </li>
+              <li className="flex items-center gap-2 text-foreground font-semibold">
+                <span className="w-2 h-2 rounded-full bg-primary" /> Machine Learning (DoshaNet)
+              </li>
+              <li className="flex items-center gap-2 text-foreground font-semibold">
+                <span className="w-2 h-2 rounded-full bg-primary" /> Hybrid Data Analysis
+              </li>
+            </ul>
           </div>
         </div>
 
-        {/* Right: visual card */}
-        <div
-          className={`${inView ? "animate-scaleIn" : "opacity-0"} bg-card border border-border/50 rounded-2xl p-8 text-center`}
-        >
-          <div className="relative w-24 h-24 mx-auto mb-6">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-accent/10 border border-primary/30 flex items-center justify-center text-4xl animate-float">
-              🧬
-            </div>
-            <div
-              className="absolute inset-[-8px] rounded-full border border-dashed border-primary/20"
-              style={{ animation: "spin 12s linear infinite" }}
-            />
-          </div>
-          <div className="font-display font-bold text-foreground mb-1">
-            Constitutional Analysis
-          </div>
-          <div className="text-sm text-muted-foreground mb-6">
-            Holistic · Intelligent · Personalized
-          </div>
-          <div className="flex flex-wrap gap-2 justify-center">
-            {PILLS.map((tag, i) => (
-              <Badge
-                key={tag}
-                variant="outline"
-                className={`text-xs ${
-                  i % 3 === 0
-                    ? "border-primary/40 text-primary"
-                    : i % 3 === 1
-                      ? "border-accent/40 text-accent"
-                      : "border-chart-3/40 text-chart-3"
-                }`}
-              >
-                {tag}
-              </Badge>
-            ))}
-          </div>
+        <div className="mt-8 text-xs text-muted-foreground italic">
+          Traditional concepts meet modern technology to deliver instant, personalized insights.
         </div>
       </div>
     </section>

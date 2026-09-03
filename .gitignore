@@ -1,3 +1,13 @@
+# Database & Uploads
+*.db
+*.sqlite
+src/backend/uploads/*
+!src/backend/uploads/.gitkeep
+
+# Python artifacts
+__pycache__/
+*.pyc
+
 # Dependencies
 node_modules/
 .pnpm-store/

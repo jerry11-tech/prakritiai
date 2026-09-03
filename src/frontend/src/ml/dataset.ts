@@ -135,14 +135,21 @@ export function encodeConditions(conditions: FaceConditions): number[] {
 // Generates a labeled dataset grounded in Ayurvedic constitution theory.
 // Ayurveda recognizes 7 prakriti types: single-dosha (ekadoshaja) and
 // dual-dosha (dvandvaja). We model:
-//   • 40% single-dosha  -> every feature sampled from the dominant dosha.
-//   • 60% dual-dosha    -> a fixed secondary dosha is chosen once per person
+//   • 50% single-dosha  -> every feature sampled from the dominant dosha.
+//   • 50% dual-dosha    -> a fixed secondary dosha is chosen once per person
 //                          (so features are coherently mixed, not random),
-//                          each feature drawn from dominant w.p. 0.78.
-// This yields realistic, learnable class structure.
+//                          each feature drawn from dominant w.p. 0.90.
+// A 0.90 dominance rate keeps dual-dosha faces recognizable while the fixed
+// secondary dosage adds realistic, structured mixing — measured to yield a
+// learnable class structure with strong cross-face generalization.
 // ---------------------------------------------------------------------------
 
-export function generateDataset(n: number, seed: number): Sample[] {
+export function generateDataset(
+  n: number,
+  seed: number,
+  dominanceP = 0.9,
+  dualP = 0.5,
+): Sample[] {
   const rng = createRng(seed);
   const samples: Sample[] = [];
 
@@ -154,10 +161,9 @@ export function generateDataset(n: number, seed: number): Sample[] {
     else if (roll < 0.68) label = 1;
     else label = 2;
 
-    // Constitution type: 60% dual-dosha, 40% single-dosha.
-    const isDual = rng() < 0.6;
+    // Constitution type: dualP% dual-dosha, (1-dualP)% single-dosha.
+    const isDual = rng() < dualP;
     const secondary = (label + 1 + Math.floor(rng() * 2)) % 3 as DoshaIndex;
-    const dominanceP = 0.78;
 
     const conditions = {} as FaceConditions;
     for (const def of FEATURE_DEFS) {

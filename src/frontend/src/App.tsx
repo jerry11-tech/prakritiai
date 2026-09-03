@@ -1,5 +1,8 @@
 import { Layout } from "./components/Layout";
+import { ExpertDashboard } from "./components/expert/ExpertDashboard";
+import { ResearchDashboard } from "./components/research/ResearchDashboard";
 import { About } from "./components/sections/About";
+import { CTA } from "./components/sections/CTA";
 import { Demo } from "./components/sections/Demo";
 import { Features } from "./components/sections/Features";
 import { Hero } from "./components/sections/Hero";
@@ -15,8 +18,11 @@ export default function App() {
       <Features />
       <HowItWorks />
       <Demo />
+      <ExpertDashboard />
+      <ResearchDashboard />
       <RecommendationsSection />
       <TechStack />
+      <CTA />
     </Layout>
   );
 }

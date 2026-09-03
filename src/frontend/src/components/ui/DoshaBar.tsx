@@ -1,19 +1,24 @@
-import type { PrakrutiType } from "../../types/prakruti";
+import type { PrimaryDosha, PrakrutiType } from "../../types/prakruti";
 
 interface DoshaBarProps {
-  dosha: PrakrutiType;
+  dosha: PrimaryDosha | PrakrutiType;
   score: number;
   width: number;
 }
 
-const DOSHA_STYLES: Record<PrakrutiType, { color: string; bar: string }> = {
+const DOSHA_STYLES: Record<PrimaryDosha, { color: string; bar: string }> = {
   Vata: { color: "text-primary", bar: "bg-primary" },
   Pitta: { color: "text-accent", bar: "bg-accent" },
   Kapha: { color: "text-chart-3", bar: "bg-chart-3" },
 };
 
 export function DoshaBar({ dosha, score, width }: DoshaBarProps) {
-  const { color, bar } = DOSHA_STYLES[dosha];
+  const primaryKey: PrimaryDosha = dosha.includes("Pitta")
+    ? "Pitta"
+    : dosha.includes("Kapha")
+    ? "Kapha"
+    : "Vata";
+  const { color, bar } = DOSHA_STYLES[primaryKey];
 
   return (
     <div className="flex items-center gap-3 mb-2.5">

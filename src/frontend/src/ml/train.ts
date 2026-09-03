@@ -20,15 +20,16 @@ import type { Metrics } from "./types.ts";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const datasetSize = Number(process.argv[2]) || 4000;
-const epochs = Number(process.argv[3]) || 80;
+const epochs = Number(process.argv[3]) || 200;
 const seed = Number(process.argv[4]) || 42;
-const hiddenSize = 24;
+const hiddenSize = 64;
 const testRatio = 0.25;
 
 console.log("Generating Ayurvedic facial-condition dataset...");
 console.log(`  dataset size : ${datasetSize}`);
 console.log(`  epochs       : ${epochs}`);
 console.log(`  seed         : ${seed}`);
+console.log(`  hidden size  : ${hiddenSize}`);
 
 const samples = generateDataset(datasetSize, seed);
 const { XTrain, YTrain, XTest, YTest } = trainTestSplit(samples, testRatio, seed + 1);
@@ -39,11 +40,14 @@ const net = new DoshaNet(inputSize, hiddenSize, 3);
 let lastReported = 0;
 net.train(XTrain, YTrain, {
   epochs,
-  lr: 0.25,
-  batchSize: 64,
-  momentum: 0.9,
+  lr: 0.004,
+  batchSize: 128,
+  optimizer: "adam",
+  weightDecay: 0.0001,
+  lrDecay: 0.99,
+  minLr: 0.0001,
   onEpoch: (epoch, loss) => {
-    if (epoch % 20 === 0 || epoch === epochs) {
+    if (epoch % 25 === 0 || epoch === epochs) {
       console.log(`  epoch ${String(epoch).padStart(3)}  loss=${loss.toFixed(4)}`);
       lastReported = loss;
     }

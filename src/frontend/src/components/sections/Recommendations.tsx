@@ -2,9 +2,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 import { RECOMMENDATIONS } from "../../data/recommendations";
 import { useInView } from "../../hooks/useInView";
-import type { PrakrutiType } from "../../types/prakruti";
+import type { PrimaryDosha, PrakrutiType } from "../../types/prakruti";
 
-const DOSHAS_CONFIG: Record<PrakrutiType, { color: string; badge: string }> = {
+const DOSHAS_CONFIG: Record<PrimaryDosha, { color: string; badge: string }> = {
   Vata: {
     color: "text-primary",
     badge: "border-primary/50 text-primary bg-primary/10",
@@ -19,23 +19,24 @@ const DOSHAS_CONFIG: Record<PrakrutiType, { color: string; badge: string }> = {
   },
 };
 
-const DOSHAS: PrakrutiType[] = ["Vata", "Pitta", "Kapha"];
+const DOSHAS: PrimaryDosha[] = ["Vata", "Pitta", "Kapha"];
 
 export function RecommendationsSection() {
   const { ref, inView } = useInView();
-  const [active, setActive] = useState<PrakrutiType>("Vata");
+  const [active, setActive] = useState<PrimaryDosha>("Vata");
   const rec = RECOMMENDATIONS[active];
 
   return (
-    <section className="py-20 md:py-24 px-6 md:px-12 bg-muted/20">
+    <section className="py-20 md:py-28 px-6 md:px-12 bg-muted/20 border-b border-border/30">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-2 text-xs font-bold tracking-widest text-accent uppercase mb-4">
+          <div className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-accent uppercase mb-3">
             <span className="w-4 h-0.5 bg-accent rounded-full" />
-            Ayurvedic Solutions
+            GUIDANCE FOR YOUR PROFILE
+            <span className="w-4 h-0.5 bg-accent rounded-full" />
           </div>
           <h2 className="font-display font-extrabold text-3xl md:text-4xl leading-tight">
-            Wisdom for Every Constitution
+            Personalized Ayurvedic Guidance
           </h2>
         </div>
 

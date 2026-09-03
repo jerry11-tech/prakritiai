@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { QUESTIONS } from "../data/questions";
 import type {
   DoshaScores,
@@ -12,18 +12,44 @@ import {
 } from "../utils/facialAnalysis";
 import { predictFacialDosha, fuseScores } from "../ml/classifier";
 
+const DRAFT_STORAGE_KEY = "prakriti_draft_answers";
+
 export function useQuestionnaire() {
-  const [answers, setAnswers] = useState<Record<string, QuestionnaireAnswer>>(
-    {},
-  );
+  const [answers, setAnswers] = useState<Record<string, QuestionnaireAnswer>>(() => {
+    if (typeof window === "undefined") return {};
+    try {
+      const saved = localStorage.getItem(DRAFT_STORAGE_KEY);
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
+
   const [imageSeed, setImageSeed] = useState<string>(generateRandomSeed());
   const [result, setResult] = useState<PrakrutiResult | null>(null);
 
+  // Auto-save draft on answers change
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        if (Object.keys(answers).length > 0) {
+          localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(answers));
+        }
+      } catch (e) {
+        console.warn("Failed to save draft answers:", e);
+      }
+    }
+  }, [answers]);
+
   const setAnswer = useCallback(
-    (questionId: string, dosha: QuestionnaireAnswer["dosha"]) => {
+    (questionId: string, dosha: QuestionnaireAnswer["dosha"], value?: string) => {
+      const q = QUESTIONS.find((item) => item.id === questionId);
+      const selOpt = q?.options.find((o) => o.dosha === dosha);
+      const valStr = value || selOpt?.value || dosha;
+
       setAnswers((prev) => ({
         ...prev,
-        [questionId]: { questionId, dosha },
+        [questionId]: { questionId, dosha, value: valStr },
       }));
     },
     [],
@@ -55,7 +81,7 @@ export function useQuestionnaire() {
     // ML inference: run the observed facial conditions through the trained
     // DoshaNet and fuse its prediction with the questionnaire tally.
     const facialPrediction = predictFacialDosha(facialConditions);
-    const fused = fuseScores(scores, facialPrediction, 0.35);
+    const fused = fuseScores(scores, facialPrediction, null, 0.35);
 
     const dominantEntry = (
       Object.entries(fused) as [keyof DoshaScores, number][]
@@ -83,6 +109,11 @@ export function useQuestionnaire() {
     setAnswers({});
     setResult(null);
     setImageSeed(generateRandomSeed());
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.removeItem(DRAFT_STORAGE_KEY);
+      } catch {}
+    }
   }, []);
 
   return {

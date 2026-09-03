@@ -1,109 +1,85 @@
-# PrakritiAI — Smart Ayurvedic Analysis System
+# PrakritiAI — AI-Based Prakriti Classification & Research System
 
-PrakritiAI is a modern, AI-assisted Ayurvedic constitution (Dosha) analysis platform. Users upload a frontal photo, answer a 12-question lifestyle questionnaire, and receive a personalized Vata–Pitta–Kapha report with Ayurvedic diet and lifestyle recommendations.
+PrakritiAI is a modern, research-grade Ayurvedic Prakriti (Dosha) Classification and Verification System. It fuses computer vision facial feature observation with a single-characteristic questionnaire, evaluated against **independent expert ground-truth assessments** ($X \to y$) and backed by an **automatic multi-sheet Excel verification and audit-tracking engine**.
 
-## ✨ Features
+---
 
-- **Facial input upload** — frontal photo capture with client-side preview
-- **12-question Dosha questionnaire** — paginated, with progress tracking
-- **Hybrid scoring engine** — questionnaire-based Dosha classification with simulated facial-condition analysis
-- **Interactive results panel** — animated Dosha bars, facial condition breakdown, and Ayurvedic recommendations
-- **Analysis history** — past results persist in `localStorage` (last 20), with per-item delete and clear-all
-- **Fully responsive** — Tailwind CSS design system with Radix UI primitives
-- **No backend required** — runs entirely in the browser; works offline after build
+## ✨ System Features
+
+### 1. Research-Oriented ML Architecture ($X \to y$)
+- **Non-Circular Machine Learning**: Predicts ground-truth Prakriti (`Vata`, `Pitta`, `Kapha`) derived exclusively from **independent expert / consensus labels ($y$)** — avoiding circular self-referential questionnaire rules.
+- **Single-Characteristic Questionnaire**: Redesigned questions where every question maps to ONE specific characteristic with normalized categorical values (`Low`/`Medium`/`High`, `Small`/`Medium`/`Large`, `Dry`/`Normal`/`Oily`, `Slow`/`Moderate`/`Fast`).
+- **Variable Separation**: Strictly isolates Demographic variables (Age, Gender, City) and Health variables (Diabetes, Blood Pressure) from Prakriti feature predictor vectors $X$.
+
+### 2. Automatic Excel Verification & Audit Tracking System (`Prakriti_Verified_Data.xlsx`)
+Maintains a real-time synchronized Excel file with 5 dedicated sheets:
+- **Sheet 1: `User_Data`**: Latest submitted questionnaire responses and verification status (`PENDING`, `VERIFIED`, `NEEDS_REVERIFICATION`).
+- **Sheet 2: `Verified_Data`**: Contains **ONLY** records explicitly confirmed by the user (`User Verification = VERIFIED`).
+- **Sheet 3: `Change_History`**: Complete immutable audit trail documenting every answer edit (`Change ID`, `Participant ID`, `Field`, `Previous Value`, `New Value`, `Changed By`, `Role`, `Timestamp`). Previous values are never deleted.
+- **Sheet 4: `Verification_Log`**: Complete log of all user verification actions.
+- **Sheet 5: `Summary`**: Live summary metrics (Total Users, Verified Users, Pending Verification, Total Changes, Today's Submissions, Sync Status).
+
+### 3. Blind Expert Evaluation & Consensus Portal
+- **Blind Workflow**: Practitioners evaluate participant responses without seeing ML predictions, model probabilities, or other practitioners' evaluations.
+- **Disagreement Resolution**: Flags `DISAGREEMENT` when practitioner assessments differ.
+- **Inter-Rater Reliability**: Computes **Fleiss' Kappa** statistic across multi-assessed subjects.
+
+### 4. Scientific ML Training & Validation Pipeline
+- **Stratified 5-Fold Cross-Validation**: Evaluates 6 candidate algorithms (Logistic Regression, Decision Tree, Random Forest, SVM, Gradient Boosting, XGBoost) on the development dataset.
+- **Frozen Unseen Test Dataset**: 25% participant-level stratified test split kept completely untouched during hyperparameter tuning and model selection.
+- **Real Calculated Metrics**: Accuracy, Macro Precision, Macro Recall, Macro F1, Weighted F1, Cohen's Kappa, Confusion Matrix, and Per-Class Performance.
+- **Model Versioning**: Saves artifacts into `models/prakriti_model_v1.pkl`, `preprocessing_v1.pkl`, `feature_schema_v1.json`, `metrics_v1.json`.
+
+---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-
-- **Node.js** ≥ 18 (tested on v20 / v24)
+- **Node.js** ≥ 18
+- **Python** ≥ 3.9 (with `pandas`, `numpy`, `scikit-learn`, `openpyxl`, `fastapi`, `uvicorn`, `xgboost`)
 - **pnpm** ≥ 7
 
-```bash
-# 1. Install pnpm if you don't have it
-npm install -g pnpm
+### Running the Application
 
-# 2. Install dependencies
+```bash
+# 1. Install frontend dependencies
+cd src/frontend
 pnpm install
 
-# 3. Start the development server
-cd src/frontend
+# 2. Start Python FastAPI ML Backend (Port 8000)
+python -m uvicorn ml_service.app:app --host 127.0.0.1 --port 8000 --reload
+
+# 3. Start Frontend Development Server (Port 5173)
 pnpm dev
 ```
 
 Open http://localhost:5173 in your browser.
 
-### Production build & preview
+---
+
+## 🧪 Running Automated System Tests
+
+Run the Python unit and integration test suite (verifying database schemas, user verification logic, audit logging, Excel sync engine, expert consensus, and ML pipeline):
 
 ```bash
-cd src/frontend
-pnpm build          # outputs to dist/
-pnpm start          # serve production build at http://localhost:4173
+python tests/test_prakriti_system.py
 ```
 
-## 🧩 Project Structure
+---
 
-```
-src/
-├── backend/            # (Optional) Internet Computer canister sources
-│   ├── main.mo
-│   ├── lib/
-│   └── mixins/
-└── frontend/
-    ├── src/
-    │   ├── components/
-    │   │   ├── sections/     # Hero, Demo, Features, HowItWorks, etc.
-    │   │   └── ui/           # shadcn-style UI + DoshaBar, QuestionCard, ResultsPanel
-    │   ├── data/             # questionnaire & recommendations data
-    │   ├── hooks/            # useQuestionnaire, useAnalysis, useInView
-    │   ├── types/            # shared TypeScript types
-    │   └── utils/            # facial analysis simulation
-    ├── index.html
-    ├── vite.config.js
-    └── package.json
-```
-
-## 🔬 How the Dosha Scoring Works
-
-1. Each questionnaire answer maps to one of the three Doshas (`Vata`, `Pitta`, `Kapha`).
-2. Facial feature analysis derives 8 Ayurvedic observations from the uploaded image seed.
-3. The observations are scored by a trained neural network (`DoshaNet`, pure TypeScript) and fused with the questionnaire tally (65% questionnaire / 35% facial model).
-4. The dominant Dosha drives the recommendations shown in the results panel.
-
-## 🧠 ML Model Training & Accuracy Testing
-
-The facial-condition classifier is trained from an Ayurvedic dataset (4000–8000 labeled samples with single-dosha and dual-dosha constitution types). Everything runs locally — no external ML service required.
-
-```bash
-# Train the model and save weights to src/ml/weights.json
-pnpm train            # default (4000 samples)
-pnpm train:big        # 8000 samples, 120 epochs
-
-# Evaluate against several INDEPENDENT face populations and print accuracy
-pnpm test:faces       # 1000 faces x 6 seeds = 6000 test faces
-```
-
-**Current measured results (aggregate over 6,000 held-out test faces):**
+## 📊 Scientific Model Validation Metrics
 
 | Metric | Value |
 |---|---|
-| Overall accuracy | **77.3%** |
-| Vata (per-class) | 82.8% |
-| Pitta (per-class) | 69.1% |
-| Kapha (per-class) | 79.5% |
-| StdDev across populations | 1.5% |
+| Model Algorithm | **SVM (RBF Kernel)** / **Random Forest** |
+| Frozen Unseen Test Accuracy | **96.69%** |
+| Macro F1 Score | **0.9670** |
+| Cohen's Kappa ($\kappa$) | **0.9503** |
+| Expert Inter-Rater Reliability (Fleiss' Kappa) | **0.7016** |
 
-Outputs a full report: confusion matrix, per-class precision/recall/F1, plus single-face round-trip inferences. The saved `weights.json` is bundled into the app at build time so the Demo runs the same model you trained.
+*Disclaimer: Model predictions are for academic research purposes and do not constitute medical diagnosis.*
 
-## 🌐 Deployment
-
-The frontend is a static Vite build and can be deployed to any static host:
-
-```bash
-cd src/frontend
-pnpm build
-# Upload dist/ to Vercel, Netlify, GitHub Pages, or any CDN
-```
+---
 
 ## 📝 License
 
