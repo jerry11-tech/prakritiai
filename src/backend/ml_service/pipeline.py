@@ -383,23 +383,42 @@ def classify_7prakriti_taxonomy(probs_dict: Dict[str, float]) -> Tuple[str, str,
     return dominant_label, category, sec, probs_dict
 
 
-def predict_prakriti_ml(
-    feature_dict: Dict[str, str], cv_features: Dict[str, Any] = None
-) -> Dict[str, Any]:
-    """Runs 3-Model Benchmark inference (Questionnaire, Vision, Multimodal Fusion)."""
-    version_str = "v2"
+_MODEL_CACHE: Dict[str, Any] = {}
+
+
+def get_cached_model_artifacts(version_str: str = "v2") -> Tuple[Any, Any, Dict[str, Any]]:
+    """Loads and caches ML model artifacts in memory for ultra-fast multi-user inference."""
+    if version_str in _MODEL_CACHE:
+        return _MODEL_CACHE[version_str]["model"], _MODEL_CACHE[version_str]["ohe"], _MODEL_CACHE[version_str]["schema"]
+
     model_path = os.path.join(MODELS_DIR, f"prakriti_model_{version_str}.pkl")
     ohe_path = os.path.join(MODELS_DIR, f"preprocessing_{version_str}.pkl")
     schema_path = os.path.join(MODELS_DIR, f"feature_schema_{version_str}.json")
+
+    if not os.path.exists(model_path):
+        version_str = "v1"
+        model_path = os.path.join(MODELS_DIR, f"prakriti_model_{version_str}.pkl")
+        ohe_path = os.path.join(MODELS_DIR, f"preprocessing_{version_str}.pkl")
+        schema_path = os.path.join(MODELS_DIR, f"feature_schema_{version_str}.json")
 
     if not os.path.exists(model_path):
         train_and_evaluate_models()
 
     model = joblib.load(model_path)
     ohe = joblib.load(ohe_path)
-
     with open(schema_path, "r", encoding="utf-8") as f:
         schema = json.load(f)
+
+    _MODEL_CACHE[version_str] = {"model": model, "ohe": ohe, "schema": schema}
+    return model, ohe, schema
+
+
+def predict_prakriti_ml(
+    feature_dict: Dict[str, str], cv_features: Dict[str, Any] = None
+) -> Dict[str, Any]:
+    """Runs 3-Model Benchmark inference (Questionnaire, Vision, Multimodal Fusion)."""
+    version_str = "v2"
+    model, ohe, schema = get_cached_model_artifacts(version_str)
 
     feature_cols = schema["featureColumns"]
     input_row = {}

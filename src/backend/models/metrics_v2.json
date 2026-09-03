@@ -1,7 +1,7 @@
 {
   "modelName": "StackingEnsemble",
   "version": "v2",
-  "trainedAt": "2026-09-03 22:51:38",
+  "trainedAt": "2026-09-04 01:25:27",
   "datasetSize": 985,
   "trainSamples": 738,
   "testSamples": 247,
