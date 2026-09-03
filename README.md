@@ -32,6 +32,30 @@ Maintains a real-time synchronized Excel file with 5 dedicated sheets:
 
 ---
 
+## 🚀 Application Links & Access Routes
+
+| Component | URL | Purpose |
+|---|---|---|
+| **Live Web App (GitHub Pages)** | [https://jerry11-tech.github.io/prakritiai/](https://jerry11-tech.github.io/prakritiai/) | Public live deployment |
+| **Frontend Home** | [http://localhost:5173](http://localhost:5173) | Local landing page |
+| **Smart Analysis Page** | [http://localhost:5173/analysis](http://localhost:5173/analysis) | Questionnaire & CV analysis |
+| **Expert Review Portal** | [http://localhost:5173/expert/login](http://localhost:5173/expert/login) | Blind practitioner review |
+| **Admin Console** | [http://localhost:5173/admin](http://localhost:5173/admin) | Research & backup management |
+| **Backend API & Swagger** | [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) | FastAPI ML service endpoints |
+
+---
+
+## 🔒 3-Tier Emergency Backup System
+
+The system includes an automated 3-tier emergency backup engine:
+1. **Tier 1 (SQLite DB Snapshot)**: Timestamped binary database snapshot saved to `backups/db/`
+2. **Tier 2 (Excel Workbook Mirror)**: Timestamped 5-sheet workbook copy saved to `backups/excel/`
+3. **Tier 3 (JSON Audit Dump)**: Full immutable JSON dump of all records saved to `backups/json/`
+
+Trigger manually via admin API: `POST /api/admin/emergency-backup`
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites
